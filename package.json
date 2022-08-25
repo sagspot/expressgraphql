@@ -1,0 +1,38 @@
+{
+  "name": "expressgraphql",
+  "version": "1.0.0",
+  "description": "Express graphql",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sagspot/expressgraphql.git"
+  },
+  "keywords": [
+    "express",
+    "graphql",
+    "mongodb"
+  ],
+  "author": "Oliver Sagala",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sagspot/expressgraphql/issues"
+  },
+  "homepage": "https://github.com/sagspot/expressgraphql#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1",
+    "nodemon": "^2.0.19"
+  }
+}

@@ -3,6 +3,7 @@ const cors = require('cors');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 const connectDB = require('./config/db');
+const Event = require('./models/event');
 require('dotenv').config();
 
 const app = express();
@@ -10,8 +11,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
-
-const events = [];
 
 app.use(
   '/graphql',
@@ -46,19 +45,22 @@ app.use(
       }
     `),
     rootValue: {
-      events: () => events,
+      events: () =>
+        Event.find().catch((error) => {
+          console.log(`[error]: ${error}`);
+          throw error;
+        }),
 
-      createEvent: (args, sags) => {
-        const event = {
-          _id: Math.random().toString(),
+      createEvent: (args) =>
+        Event.create({
           title: args.eventInput.title,
           description: args.eventInput.description,
           price: +args.eventInput.price,
-          date: new Date().toISOString(),
-        };
-        events.push(event);
-        return event;
-      },
+          date: new Date(args.eventInput.date),
+        }).catch((error) => {
+          console.log(`[error]: ${error}`);
+          throw error;
+        }),
     },
     graphiql: process.env.NODE_ENV !== 'production',
   })

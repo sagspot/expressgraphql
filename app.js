@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
+const connectDB = require('./config/db');
 require('dotenv').config();
 
 const app = express();
@@ -65,8 +66,17 @@ app.use(
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () =>
-  console.log(
-    `[server]: Server is listening on http://localhost:${PORT}/graphql`
-  )
-);
+(async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () =>
+      console.log(
+        `[server]: Server is listening on http://localhost:${PORT}/graphql`
+      )
+    );
+  } catch (error) {
+    console.error(`[error]: ${error}`);
+    process.exit(1);
+  }
+})();

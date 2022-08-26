@@ -10,30 +10,31 @@ module.exports = {
 
       return events.map((event) => transformEvent(event));
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   },
 
-  createEvent: async (args) => {
+  createEvent: async (args, req) => {
     try {
+      if (!req.isAuth) throw 'Unauthenticated';
+
       const event = await Event.create({
         title: args.eventInput.title,
         description: args.eventInput.description,
         price: +args.eventInput.price,
-        date: dateToString(args.eventInput),
-        creator: '6307ef81c7b4338b167398ea',
+        date: dateToString(args.eventInput.date),
+        creator: req.userId,
       });
 
-      const currUser = await User.findById('6307ef81c7b4338b167398ea');
-      if (!currUser) throw 'User not found';
+      const creator = await User.findById(req.userId);
+      if (!creator) throw 'User not found';
 
-      currUser.createdEvents.push(event.id);
-      await currUser.save();
+      creator.createdEvents.push(event.id);
+      await creator.save();
 
       return transformEvent(event);
     } catch (error) {
-      console.log(`[error]: ${error}`);
-      throw error;
+      throw new Error(error);
     }
   },
 };

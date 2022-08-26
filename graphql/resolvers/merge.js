@@ -50,6 +50,6 @@ const transformBooking = (booking) => ({
 
 // exports.events = events;
 // exports.singleEvent = singleEvent;
-// exports.user = user;
+exports.user = user;
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;
